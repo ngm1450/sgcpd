@@ -1,0 +1,67 @@
+<div class="pagina-inicial">
+  <div class="card card-perfil">
+    <img class="foto-perfil" [src]="professor.fotoPerfil" alt="Foto de perfil" />
+    <h2>{{ professor.nome }}</h2>
+    <p><strong>Departamento:</strong> {{ professor.departamento }}</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="card destaque">
+      <p class="titulo">Turmas atribuídas</p>
+      <p class="valor">{{ professor.totalTurmas }}</p>
+    </div>
+
+    <div class="card destaque">
+      <p class="titulo">Total de alunos</p>
+      <p class="valor">{{ professor.totalAlunos }}</p>
+    </div>
+
+    <div class="card destaque">
+      <p class="titulo">Lançamentos pendentes</p>
+      <p class="valor">{{ professor.lancamentosPendentes }}</p>
+    </div>
+  </div>
+
+  <div class="card card-turmas">
+    <h3>Turmas do semestre atual</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Horário</th>
+        <th>Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let turma of professor.turmas">
+        <td>{{ turma.codigoDisciplina }}</td>
+        <td>{{ turma.nomeDisciplina }}</td>
+        <td>{{ turma.horario }}</td>
+        <td>
+          <button (click)="abrirModal(turma.id)" class="acao">Ver alunos</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #modalListaAlunos>
+  <div class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>{{ turmaSelecionada.nomeDisciplina }} ({{ turmaSelecionada.codigoDisciplina }})</h3>
+        <button (click)="modalRef.close()" class="fechar">&times;</button>
+      </div>
+
+      <div class="lista">
+        <div *ngFor="let aluno of this.turmaSelecionada.alunos" class="lista-item">
+          <span>{{ aluno.nome }} - {{ aluno.matricula }}</span>
+          <span>{{ aluno.situacao }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+

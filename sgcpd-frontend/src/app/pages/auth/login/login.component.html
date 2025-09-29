@@ -1,0 +1,32 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2>Bem-vindo(a) ao Uniesquina 👋</h2>
+    <p class="subtitulo">Acesse sua conta com sua matrícula e senha</p>
+
+    <form [formGroup]="form" (ngSubmit)="login()">
+      <div class="form-group" [ngClass]="{ 'erro': campoInvalido('matricula') }">
+        <input
+          type="text"
+          formControlName="matricula"
+          placeholder="Matrícula"
+        />
+        <div class="mensagem-erro" *ngIf="campoInvalido('matricula')">
+          Campo obrigatório
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{ 'erro': campoInvalido('senha') }">
+        <input
+          type="password"
+          formControlName="senha"
+          placeholder="Senha"
+        />
+        <div class="mensagem-erro" *ngIf="campoInvalido('senha')">
+          Campo obrigatório
+        </div>
+      </div>
+
+      <button type="submit">Acessar</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="pagina-inicial">
+  <div class="card card-perfil">
+    <img class="foto-perfil" [src]="aluno.fotoPerfil" alt="Foto de perfil" height="2048" width="1367"/>
+    <h2>{{ aluno.nome }}</h2>
+    <p><strong>Curso:</strong> {{ aluno.curso }}</p>
+    <p><strong>Departamento:</strong> {{ aluno.departamento }}</p>
+    <p><strong>Semestre atual:</strong> {{ aluno.semestreAtual }}</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="card destaque">
+      <p class="titulo">Créditos concluídos</p>
+      <p class="valor">{{ aluno.creditosConcluidos }} / {{ aluno.creditosTotais }}</p>
+      <div class="progress-bar">
+        <div class="progress" [style.width.%]="progressoPercentual"></div>
+      </div>
+    </div>
+
+    <div class="card destaque">
+      <p class="titulo">CR (Coeficiente de Rendimento)</p>
+      <p class="valor">{{ aluno.cr }}</p>
+    </div>
+
+    <div class="card destaque">
+      <p class="titulo">Previsão de formatura</p>
+      <p class="valor">{{ aluno.previsaoFormatura }}</p>
+    </div>
+  </div>
+
+  <ng-template #modalMatricula>
+    <div class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Matricular-se em disciplinas</h3>
+          <button (click)="fecharModal()" class="fechar">&times;</button>
+        </div>
+
+        <input type="text" placeholder="Pesquisar disciplina..." [(ngModel)]="filtro" class="input-pesquisa" />
+
+        <div class="lista">
+          <div *ngFor="let disciplina of disciplinasFiltradas()" class="lista-item">
+            <span>{{ disciplina.codigo }} - {{ disciplina.nome }}</span>
+            <button class="botao-adicionar" (click)="adicionarDisciplina(disciplina)">Adicionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <div class="card card-turmas">
+    <div class="header-turmas">
+      <h3>Turmas do semestre atual</h3>
+      <button class="botao-matricula" (click)="abrirModal(modalMatricula)">+ Matricular-se</button>
+    </div>
+    <table>
+      <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Horário</th>
+        <th>Situação</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let turma of aluno.turmas">
+        <td>{{ turma.codigoDisciplina }}</td>
+        <td>{{ turma.nomeDisciplina }}</td>
+        <td>{{ turma.horario }}</td>
+        <td>{{ turma.status }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

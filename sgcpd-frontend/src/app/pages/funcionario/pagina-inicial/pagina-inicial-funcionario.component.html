@@ -1,0 +1,109 @@
+<div class="dashboard-funcionario">
+  <div class="perfil">
+    <img class="foto-perfil" [src]="funcionario.fotoPerfil" alt="Foto de perfil" />
+    <h2>{{ funcionario.nome }}</h2>
+    <p><strong>Cargo:</strong> {{ funcionario.cargo }}</p>
+    <p><strong>Departamento:</strong> {{ funcionario.departamento }}</p>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <p class="titulo">Alunos Ativos</p>
+      <p class="valor">{{ funcionario.stats.alunosAtivos }}</p>
+    </div>
+    <div class="card">
+      <p class="titulo">Turmas Abertas</p>
+      <p class="valor">{{ funcionario.stats.turmasAbertas }}</p>
+    </div>
+    <div class="card">
+      <p class="titulo">Pendências de Matrícula</p>
+      <p class="valor">{{ funcionario.stats.pendenciasMatricula }}</p>
+    </div>
+    <div class="card">
+      <p class="titulo">Solicitações Recentes</p>
+      <p class="valor">{{ funcionario.stats.solicitacoesRecentes }}</p>
+    </div>
+  </div>
+
+  <div class="acoes">
+    <button class="btn" (click)="abrirCadastroAluno()">Cadastrar Novo Aluno</button>
+    <button class="btn" (click)="abrirPeriodoMatricula()">Abrir Período de Matrícula</button>
+  </div>
+</div>
+
+<ng-template #modalCadastroAluno>
+  <div class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h5>Cadastro de Aluno</h5>
+        <button class="btn btn-close" (click)="modalCadastroAlunoRef.close()">×</button>
+      </div>
+
+      <form [formGroup]="formCadastroAluno" class="modal-body">
+        <div class="form-group">
+          <label>Nome</label>
+          <input formControlName="nome" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>CPF</label>
+          <input formControlName="cpf" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input formControlName="email" type="email" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input formControlName="telefone" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Sexo</label>
+          <select formControlName="sexo" class="form-control">
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Matrícula</label>
+          <input formControlName="matricula" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Situação</label>
+          <input formControlName="situacao" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Limite de Créditos</label>
+          <input type="number" formControlName="limiteCreditos" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Curso</label>
+          <select formControlName="curso" class="form-control">
+            <option *ngFor="let curso of cursos" [value]="curso">{{ curso }}</option>
+          </select>
+        </div>
+      </form>
+
+      <div class="modal-footer" style="margin-top: 1rem; text-align: right">
+        <button class="btn btn-secondary" (click)="modalCadastroAlunoRef.close()">Cancelar</button>
+        <button class="btn btn-primary" (click)="salvarAluno()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalInicializaoPeriodo>
+  <div class="modal-overlay">
+    <div class="modal modal-confirmacao">
+      <button class="btn-close" (click)="modalInicializaoPeriodoRef.close()">×</button>
+      <div class="modal-body alegria">
+        Período 2025/1 aberto com sucesso! 🎉
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="modalInicializaoPeriodoRef.close()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+
+

@@ -1,0 +1,8 @@
+<header class="header">
+  <div class="logo">🎓 Uniesquina</div>
+
+  <div class="usuario" *ngIf="estaLogado">
+    <span>Bem-vind{{ sexoUsuarioLogado === 'M' ? 'o' : 'a' }}, {{ nomeUsuarioLogado }}!</span>
+    <button (click)="logout()">Sair</button>
+  </div>
+</header>
