@@ -1,0 +1,14 @@
+# IDEs
+**/.idea/
+**/*.iml
+
+# Node / Angular
+**/node_modules/
+**/.angular/
+
+# Java/Maven
+**/target/
+
+# SO
+.DS_Store
+Thumbs.db
