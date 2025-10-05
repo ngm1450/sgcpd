@@ -10,7 +10,7 @@ Matrícula: 2025200254
 
 ## 🎥 Vídeo de Demonstração
 
-[Assista ao vídeo de demonstração no YouTube](https://youtu.be/yeQGGKr14cc)
+[Assista ao vídeo de demonstração](https://drive.google.com/file/d/1t0zJM5E_kv1hwPqei2SMZ3YXnRf-G7CI/view?usp=sharing)
 
 ---
 
@@ -107,13 +107,13 @@ Aplicação full‑stack para gestão de conteúdos pessoais com categorias, ane
 
 2) Suba os serviços:
 ```bash
-docker compose up --build -d
+docker-compose up --build -d
 ```
 
 > **Nota:** na primeira subida é comum o backend iniciar antes do PostgreSQL e falhar a conexão.
 > Se ocorrer erro de conexão no backend, suba novamente:
 > ```bash
-> docker compose up -d
+> docker-compose up -d
 > ```
 > ou reinicie apenas o serviço do backend.
 
