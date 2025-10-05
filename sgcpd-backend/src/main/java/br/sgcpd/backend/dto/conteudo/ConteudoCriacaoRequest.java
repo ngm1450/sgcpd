@@ -10,7 +10,6 @@ import java.util.Set;
 public record ConteudoCriacaoRequest(
     @NotBlank @Size(max = 160) String titulo,
     @NotBlank String corpo,
-    @NotNull Long idAutor,
     Long idCategoria,
     Set<Long> idsTags,
     @NotNull StatusConteudoEnum status

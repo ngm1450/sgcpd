@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "conteudo")
+@Table(name = "conteudo", schema = "public")
 public class Conteudo {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,7 @@ public class Conteudo {
     @Column(nullable = false, length = 160)
     private String titulo;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(name = "corpo", nullable = false, columnDefinition = "TEXT")
     private String corpo;
 
     @Enumerated(EnumType.STRING)
@@ -37,20 +36,28 @@ public class Conteudo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria", foreignKey = @ForeignKey(name = "fk_categoria_conteudo"))
-    private ConteudoCategoria categoria;
+    private Categoria categoria;
 
     @ManyToMany
-    @JoinTable(name = "conteudo_tag",
+    @JoinTable(name = "conteudo_x_tag",
             joinColumns = @JoinColumn(name = "id_conteudo"),
             inverseJoinColumns = @JoinColumn(name = "id_tag"),
             foreignKey = @ForeignKey(name = "fk_ct_content"),
             inverseForeignKey = @ForeignKey(name = "fk_ct_tag"))
-    private Set<ConteudoTag> tags = new HashSet<>();
+    private Set<Tag> tags = new HashSet<>();
+
+    @OneToMany(
+        mappedBy = "conteudo",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.LAZY
+    )
+    private Set<Arquivo> arquivos = new HashSet<>();
 
     @Column(nullable = false, updatable = false)
     private Instant dataCriacao = Instant.now();
 
-    @Column(nullable = false)
+    @Column(name = "data_atualizacao", nullable = false)
     private Instant dataAtualizacao = Instant.now();
 
     @PreUpdate

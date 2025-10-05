@@ -1,16 +1,16 @@
 <div class="login-wrapper">
   <div class="login-card">
-    <h2>Bem-vindo(a) ao sgcpd 👋</h2>
-    <p class="subtitulo">Acesse sua conta com sua matrícula e senha</p>
+    <h2>Bem-vindo(a) ao SGCPD 👋</h2>
+    <p class="subtitulo">Acesse sua conta com seu e-mail e senha</p>
 
     <form [formGroup]="form" (ngSubmit)="login()">
-      <div class="form-group" [ngClass]="{ 'erro': campoInvalido('matricula') }">
+      <div class="form-group" [ngClass]="{ 'erro': campoInvalido('email') }">
         <input
           type="text"
-          formControlName="matricula"
-          placeholder="Matrícula"
+          formControlName="email"
+          placeholder="E-mail"
         />
-        <div class="mensagem-erro" *ngIf="campoInvalido('matricula')">
+        <div class="mensagem-erro" *ngIf="campoInvalido('email')">
           Campo obrigatório
         </div>
       </div>

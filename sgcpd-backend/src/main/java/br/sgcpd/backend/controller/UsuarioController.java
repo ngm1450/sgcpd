@@ -47,9 +47,12 @@ public class UsuarioController {
     public void delete(@PathVariable Long id) { usuarioService.delete(id); }
 
     @GetMapping
-    public Page<UsuarioResposta> list(@PageableDefault(size = 20) Pageable pageable) {
-        return usuarioService.list(pageable);
+    public Page<UsuarioResposta> list(
+        @RequestParam(required = false) String q,
+        @RequestParam(required = false) Boolean ativo,
+        @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return usuarioService.list(q, ativo, pageable);
     }
-
 }
 

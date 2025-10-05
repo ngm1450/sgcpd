@@ -1,0 +1,69 @@
+.usuarios-card {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr 200px auto;
+  gap: .75rem;
+  margin-bottom: 1rem;
+
+  input, select, button {
+    padding: .5rem .75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+  }
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: .6rem .75rem;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th { cursor: pointer; }
+
+  .acoes {
+    display: flex;
+    gap: .35rem;
+    button {
+      border: 1px solid #ddd;
+      background: #fafafa;
+      border-radius: 6px;
+      padding: .3rem .5rem;
+      cursor: pointer;
+    }
+  }
+}
+
+.chip {
+  padding: .15rem .5rem;
+  border-radius: 999px;
+  font-size: .75rem;
+
+  &.ativo   { background: #d1e7dd; }
+  &.inativo { background: #f8d7da; }
+}
+
+.paginacao {
+  margin-top: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+
+  button {
+    padding: .35rem .6rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+  }
+}

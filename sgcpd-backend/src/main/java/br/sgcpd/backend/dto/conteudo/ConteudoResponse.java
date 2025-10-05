@@ -1,8 +1,10 @@
 package br.sgcpd.backend.dto.conteudo;
 
+import br.sgcpd.backend.entity.Arquivo;
 import br.sgcpd.backend.enums.StatusConteudoEnum;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 
 public record ConteudoResponse(
@@ -17,5 +19,6 @@ public record ConteudoResponse(
     Set<Long> idsTags,
     Set<String> tagNames,
     Instant dataCriacao,
-    Instant dataAtualizacao
+    Instant dataAtualizacao,
+    List<Arquivo> arquivos
 ) {}

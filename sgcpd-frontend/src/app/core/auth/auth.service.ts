@@ -21,16 +21,10 @@ export class AuthService {
       );
   }
 
-  getUsuarioLogado(): { nome: string, perfil: string, matricula: string, sexo: 'M' | 'F' } {
+  getUsuarioLogado(): { nome: string; email: string } {
     const token = this.getToken();
-    const { nome, perfil, sub: matricula, sexo } = JSON.parse(atob(token.split('.')[1]));
-    return { nome, perfil, matricula, sexo };
-  }
-
-  getPerfil(): string {
-    const token = this.getToken();
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.perfil || null;
+    const { nome, email } = this.decodeJwtPayload(token);
+    return { nome, email };
   }
 
   logout(): void {
@@ -49,4 +43,16 @@ export class AuthService {
     }
     return token;
   }
+
+  private decodeJwtPayload(token: string): any {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=');
+
+    const binary = atob(padded);
+    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+    const json = new TextDecoder('utf-8').decode(bytes);
+    return JSON.parse(json);
+  }
+
 }

@@ -9,7 +9,7 @@ public class UsuarioMapper {
     private UsuarioMapper() {}
 
     public static UsuarioResposta toResponse(Usuario u) {
-        return new UsuarioResposta(u.getId(), u.getNome(), u.getEmail(), u.isAtivo());
+        return new UsuarioResposta(u.getId(), u.getNome(), u.getEmail(), u.isAtivo(), u.getDataAtualizacao());
     }
 
     public static void update(Usuario u, UsuarioAlteracaoRequest r) {

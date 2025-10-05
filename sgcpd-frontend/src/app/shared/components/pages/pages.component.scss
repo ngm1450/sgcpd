@@ -1,0 +1,15 @@
+/* Espaço e responsividade leves para as abas */
+.nav-tabs {
+  padding: .25rem;
+  border-radius: .5rem;
+}
+
+/* Melhor clique em touch */
+.nav-link {
+  padding: .5rem 1rem;
+}
+
+/* Mantém contraste consistente com Bootstrap */
+.nav-link.active {
+  font-weight: 600;
+}

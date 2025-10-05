@@ -1,0 +1,159 @@
+<ng-container *ngIf="!carregando(); else carregandoTpl">
+  <div class="container py-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <div class="row g-2 align-items-center mb-3">
+
+          <div class="col-12 col-md">
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Buscar por título/corpo…"
+              [formControl]="filtroForm.controls.textoBusca" />
+          </div>
+
+          <div class="col-6 col-md-auto">
+            <select class="form-select w-auto min-180" [formControl]="filtroForm.controls.status">
+              <option value="">Status (todos)</option>
+              <option *ngFor="let s of statusOpcoes" [value]="s.value">{{ s.label }}</option>
+            </select>
+          </div>
+
+          <div class="col-6 col-md-auto">
+            <select class="form-select w-auto min-200" [formControl]="filtroForm.controls.idCategoria">
+              <option value="">Categoria (todas)</option>
+              <option *ngFor="let c of categorias | async" [ngValue]="c.id">
+                {{ c.nome }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-12 col-md-auto ms-md-auto d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary flex-fill flex-md-grow-0"
+                    (click)="limparFiltros()">
+              Limpar
+            </button>
+
+            <button class="btn btn-primary flex-fill flex-md-grow-0"
+                    (click)="openNovoConteudo()">
+              Novo conteúdo
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive" *ngIf="dados()?.content?.length; else vazioTpl">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+            <tr>
+              <th role="button" (click)="ordenar('titulo')">
+                Título
+                <span class="text-muted small ms-1">⇅</span>
+              </th>
+              <th>Status</th>
+              <th role="button" (click)="ordenar('dataAtualizacao')">
+                Atualizado em
+                <span class="text-muted small ms-1">⇅</span>
+              </th>
+              <th>Último editor</th>
+              <th>Categoria</th>
+              <th class="text-end">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let c of dados()!.content">
+              <td class="fw-medium">{{ c.titulo }}</td>
+              <td>
+                <span class="badge" [ngClass]="statusBadgeClass(c.status)">
+                  {{ c.status }}
+                </span>
+              </td>
+              <td>{{ c.dataAtualizacao | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ c.nomeAutor }}</td>
+              <td>{{ c.nomeCategoria || '—' }}</td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary" title="Visualizar" (click)="openView(c)">👁️</button>
+                  <button class="btn btn-outline-secondary" title="Editar" (click)="openEdit(c)">✏️</button>
+                  <button class="btn btn-outline-danger" title="Excluir" (click)="askDelete(c)">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <nav *ngIf="(dados()?.totalElements || 0) > 0" aria-label="Paginação">
+          <ul class="pagination mb-0 justify-content-center">
+            <li class="page-item">
+              <button class="page-link" (click)="trocarPagina(-1)">&laquo; Anterior</button>
+            </li>
+            <li class="page-item disabled">
+              <span class="page-link">
+                Página {{ (dados()!.number + 1) }} de {{ dados()!.totalPages || 1 }}
+              </span>
+            </li>
+            <li class="page-item">
+              <button class="page-link" (click)="trocarPagina(1)">Próxima &raquo;</button>
+            </li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+
+<ng-template #carregandoTpl>
+  <div class="container py-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-center align-items-center py-5" aria-busy="true" aria-live="polite">
+          <div class="spinner-border" role="status" aria-label="Carregando"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #vazioTpl>
+  <div class="alert alert-warning d-flex justify-content-between align-items-center" role="status" aria-live="polite">
+    <span>Nenhum conteúdo foi encontrado com os parâmetros informados.</span>
+    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="limparFiltros()">
+      Limpar filtros
+    </button>
+  </div>
+</ng-template>
+
+<app-novo-conteudo-modal
+  [open]="novoOpen"
+  (saved)="onConteudoSaved($event)"
+  (closed)="onNovoClosed()">
+</app-novo-conteudo-modal>
+
+<app-novo-conteudo-modal
+  [open]="editOpen"
+  [mode]="'edit'"
+  [editId]="editId"
+  (saved)="onConteudoEdited($event)"
+  (closed)="editOpen = false">
+</app-novo-conteudo-modal>
+
+<app-visualizar-conteudo-modal
+  [open]="viewOpen"
+  [conteudoId]="viewId"
+  (closed)="viewOpen = false">
+</app-visualizar-conteudo-modal>
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  [title]="'Excluir conteúdo'"
+  [message]="'Tem certeza que deseja excluir “' + (toDelete?.titulo || '') + '”? Esta ação não pode ser desfeita.'"
+  [confirmLabel]="'Excluir'"
+  [cancelLabel]="'Cancelar'"
+  [danger]="true"
+  [busy]="deleting"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()">
+</app-confirm-dialog>

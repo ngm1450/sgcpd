@@ -1,0 +1,146 @@
+<ng-container *ngIf="!carregando(); else carregandoTpl">
+  <div class="container py-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <div class="row g-2 align-items-center mb-3">
+
+          <div class="col-12 col-md">
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Buscar por nome ou e-mail…"
+              [formControl]="filtroForm.controls.q" />
+          </div>
+
+          <div class="col-6 col-md-auto">
+            <select class="form-select w-auto min-180" [formControl]="filtroForm.controls.ativo" title="Status">
+              <option value="">Status (todos)</option>
+              <option [ngValue]="true">Ativos</option>
+              <option [ngValue]="false">Inativos</option>
+            </select>
+          </div>
+
+          <div class="col-12 col-md-auto ms-md-auto d-flex gap-2">
+            <button type="button"
+                    class="btn btn-outline-secondary flex-fill flex-md-grow-0"
+                    (click)="limparFiltros()">
+              Limpar
+            </button>
+
+            <button type="button"
+                    class="btn btn-primary flex-fill flex-md-grow-0"
+                    (click)="abrirNovoUsuario()">
+              Novo usuário
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabela -->
+        <div class="table-responsive" *ngIf="dados()?.content?.length; else vazioTpl">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+            <tr>
+              <th role="button" (click)="ordenar('nome')">
+                Nome
+                <span class="text-muted small ms-1">⇅</span>
+              </th>
+              <th role="button" (click)="ordenar('email')">
+                E-mail
+                <span class="text-muted small ms-1">⇅</span>
+              </th>
+              <th>Status</th>
+              <th role="button" (click)="ordenar('dataAtualizacao')">
+                Data de criação
+                <span class="text-muted small ms-1">⇅</span>
+              </th>
+              <th class="text-end">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let u of dados()!.content">
+              <td class="fw-medium">{{ u.nome }}</td>
+              <td>{{ u.email }}</td>
+              <td>
+                  <span class="badge" [ngClass]="statusBadgeClassUsuario(u.ativo)">
+                    {{ u.ativo ? 'Ativo' : 'Inativo' }}
+                  </span>
+              </td>
+              <td>{{ u.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td class="text-end" >
+                <div class="btn-group btn-group-sm" *ngIf="authService.getUsuarioLogado().email !== u.email; else dummyElement">
+                  <button class="btn btn-outline-secondary" title="Editar" (click)="abrirEditarUsuario(u)">✏️</button>
+                  <button class="btn btn-outline-danger" title="Excluir" (click)="askDelete(u)">
+                    🗑️
+                  </button>
+                </div>
+                <ng-template #dummyElement>-</ng-template>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginação (só quando há itens) -->
+        <nav *ngIf="(dados()?.totalElements || 0) > 0" aria-label="Paginação">
+          <ul class="pagination mb-0 justify-content-center">
+            <li class="page-item">
+              <button class="page-link" (click)="trocarPagina(-1)">&laquo; Anterior</button>
+            </li>
+            <li class="page-item disabled">
+              <span class="page-link">
+                Página {{ (dados()!.number + 1) }} de {{ dados()!.totalPages || 1 }}
+              </span>
+            </li>
+            <li class="page-item">
+              <button class="page-link" (click)="trocarPagina(1)">Próxima &raquo;</button>
+            </li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Templates auxiliares padronizados -->
+<ng-template #carregandoTpl>
+  <div class="container py-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-center align-items-center py-5" aria-busy="true" aria-live="polite">
+          <div class="spinner-border" role="status" aria-label="Carregando"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #vazioTpl>
+  <div class="alert alert-warning d-flex justify-content-between align-items-center" role="status" aria-live="polite">
+    <span>Nenhum usuário foi encontrado com os parâmetros informados.</span>
+    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="limparFiltros()">
+      Limpar filtros
+    </button>
+  </div>
+</ng-template>
+
+<novo-usuario-modal
+  [open]="modalUsuarioAberto"
+  [mode]="modalUsuarioMode"
+  [usuario]="usuarioSelecionado"
+  (saved)="onSalvarUsuario($event)"
+  (closed)="modalUsuarioAberto = false">
+</novo-usuario-modal>
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  [title]="'Excluir conteúdo'"
+  [message]="'Tem certeza que deseja excluir o usuário de “' + (toDelete?.nome || '') + '”? Esta ação não pode ser desfeita.'"
+  [confirmLabel]="'Excluir'"
+  [cancelLabel]="'Cancelar'"
+  [danger]="true"
+  [busy]="deleting"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()">
+</app-confirm-dialog>

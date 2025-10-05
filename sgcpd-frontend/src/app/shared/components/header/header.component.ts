@@ -19,10 +19,6 @@ export class HeaderComponent {
     return this.authService.getUsuarioLogado().nome;
   }
 
-  get sexoUsuarioLogado(): 'M' | 'F' {
-    return this.authService.getUsuarioLogado().sexo;
-  }
-
   get estaLogado(): boolean {
     return this.authService.isAuthenticated();
   }

@@ -1,8 +1,8 @@
 <header class="header">
-  <div class="logo">🎓 sgcpd</div>
+  <div class="logo">📚 Sistema de Gerenciamento de Conteúdo Pessoal Dinâmico (SGCPD)</div>
 
   <div class="usuario" *ngIf="estaLogado">
-    <span>Bem-vind{{ sexoUsuarioLogado === 'M' ? 'o' : 'a' }}, {{ nomeUsuarioLogado }}!</span>
+    <span>Bem-vindo (a), {{ nomeUsuarioLogado }}!</span>
     <button (click)="logout()">Sair</button>
   </div>
 </header>

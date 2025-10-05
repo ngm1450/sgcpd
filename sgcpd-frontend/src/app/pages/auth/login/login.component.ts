@@ -3,7 +3,6 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {PerfilStrategyFactory} from '../../../core/navigation/perfil-strategy.factory';
 
 @Component({
   standalone: false,
@@ -19,7 +18,7 @@ export class LoginComponent {
               private toastr: ToastrService,
               private router: Router) {
     this.form = this.fb.group({
-      matricula: ['', Validators.required],
+      email: ['', Validators.required],
       senha: ['', Validators.required]
     });
   }
@@ -29,12 +28,11 @@ export class LoginComponent {
     if (this.form.invalid) return;
     this.authService.login(this.form.value).subscribe({
       next: () => {
-        const perfil = this.authService.getPerfil();
-        const strategy = new PerfilStrategyFactory(this.router).getStrategy(perfil);
-        strategy.redirecionar();
+        void this.router.navigate(['/conteudo']);
       },
       error: err => {
         const mensagem = err?.error?.erro || 'Erro desconhecido ao tentar logar.';
+        console.error(err)
         this.toastr.error(mensagem, 'Erro');
       }
     });

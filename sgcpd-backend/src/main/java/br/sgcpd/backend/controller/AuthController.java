@@ -15,8 +15,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UsuarioRepository usuarioRepository;
     private final JwtUtil jwtUtil;
+    private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
@@ -28,10 +28,10 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("erro", "Email e senha são obrigatórios."));
         }
 
-        return usuarioRepository.findByEmail(email)
+        return usuarioRepository.findUsuarioByEmailAndAtivoIsTrue(email)
                 .map(usuario -> {
 
-                    if (!passwordEncoder.matches(senha, usuario.getHashSenha())) {
+                    if (!passwordEncoder.matches(senha, usuario.getSenha())) {
                         return ResponseEntity.status(401).body(Map.of("erro", "Senha inválida."));
                     }
 

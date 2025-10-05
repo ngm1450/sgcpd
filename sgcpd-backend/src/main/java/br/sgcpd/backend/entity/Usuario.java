@@ -24,13 +24,16 @@ public class Usuario {
     @Column(nullable = false, length = 160)
     private String email;
 
+    @Column(nullable = false, length = 160)
+    private String senha;
+
     @Column(nullable = false)
     private boolean ativo = true;
 
     @Column(nullable = false, updatable = false)
     private Instant dataCriacao = Instant.now();
 
-    @Column(nullable = false)
+    @Column(name = "data_atualizacao", nullable = false)
     private Instant dataAtualizacao = Instant.now();
 
     @PreUpdate

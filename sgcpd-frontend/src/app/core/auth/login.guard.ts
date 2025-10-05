@@ -11,8 +11,7 @@ export class LoginRedirectGuard implements CanActivate {
 
   canActivate(): boolean | UrlTree {
     if (this.authService.isAuthenticated()) {
-      const perfil = this.authService.getPerfil().toLowerCase();
-      return this.router.parseUrl(`/${perfil}/pagina-inicial`);
+      return this.router.parseUrl('/conteudo');
     }
     return true;
   }

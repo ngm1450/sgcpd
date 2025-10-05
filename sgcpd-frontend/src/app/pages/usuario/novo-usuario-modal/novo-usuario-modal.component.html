@@ -1,0 +1,94 @@
+<!-- Backdrop (mesmo padrão do modal de conteúdo) -->
+<div class="modal-backdrop fade" [class.show]="open" *ngIf="open"></div>
+
+<!-- Modal -->
+<div class="modal fade"
+     [class.show]="open"
+     [style.display]="open ? 'block' : 'none'"
+     tabindex="-1"
+     role="dialog"
+     aria-modal="true"
+     [attr.aria-hidden]="!open"
+     (click)="onBackdropClick()"
+     (keydown)="onKeydown($event)">
+
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document" (click)="stop($event)">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title m-0">
+          {{ mode === 'edit' ? 'Editar usuário' : 'Novo usuário' }}
+        </h5>
+        <button type="button" class="btn-close" aria-label="Fechar" (click)="close()"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Erros de carregamento/validação -->
+        <div *ngIf="errorUsuario" class="alert alert-danger mb-3">{{ errorUsuario }}</div>
+
+        <form (ngSubmit)="save(f)" #f="ngForm">
+          <!-- Nome -->
+          <div>
+            <label class="form-label" for="nome">Nome</label>
+            <input id="nome"
+                   type="text"
+                   class="form-control"
+                   name="nome"
+                   [(ngModel)]="form.nome"
+                   maxlength="80"
+                   required>
+            <div class="form-text text-end">{{ (form.nome || '').length }}/80</div>
+          </div>
+
+          <!-- E-mail -->
+          <div class="mb-3">
+            <label class="form-label" for="email">E-mail</label>
+            <input id="email"
+                   type="email"
+                   class="form-control"
+                   name="email"
+                   [(ngModel)]="form.email"
+                   maxlength="120"
+                   required>
+          </div>
+
+          <!-- Senha -->
+          <div class="mb-3">
+            <label class="form-label" for="senha">Senha</label>
+            <input id="senha"
+                   type="password"
+                   class="form-control"
+                   name="senha"
+                   [(ngModel)]="form.senha"
+                   [attr.placeholder]="mode === 'edit' ? 'Deixe em branco para manter' : ''"
+                   [required]="mode === 'create'"
+                   minlength="6"
+                   maxlength="72">
+            <div class="form-text" *ngIf="mode === 'edit'">Deixe em branco para manter a senha atual.</div>
+          </div>
+
+          <!-- Status -->
+          <div class="mb-3">
+            <label class="form-label" for="status">Status</label>
+            <select id="status"
+                    class="form-select"
+                    name="status"
+                    [(ngModel)]="form.ativo">
+              <option [ngValue]="true">Ativado</option>
+              <option [ngValue]="false">Desativado</option>
+            </select>
+          </div>
+
+          <!-- Footer -->
+          <div class="modal-footer px-0">
+            <button type="button" class="btn btn-outline-secondary" (click)="close()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!canSave() || loading">
+              {{ mode === 'edit' ? 'Salvar alterações' : 'Salvar' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

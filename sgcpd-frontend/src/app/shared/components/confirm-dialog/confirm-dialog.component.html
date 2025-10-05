@@ -1,0 +1,38 @@
+<!-- Backdrop -->
+<div class="modal-backdrop fade" [class.show]="open" *ngIf="open"></div>
+
+<!-- Modal -->
+<div class="modal fade"
+     [class.show]="open"
+     [style.display]="open ? 'block' : 'none'"
+     tabindex="-1"
+     role="dialog"
+     aria-modal="true"
+     [attr.aria-hidden]="!open"
+     (click)="onBackdropClick()"
+     (keydown)="onKeydown($event)">
+
+  <div class="modal-dialog modal-dialog-centered" role="document" (click)="stop($event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title m-0">{{ title }}</h5>
+        <button type="button" class="btn-close" aria-label="Fechar" (click)="cancel.emit()" [disabled]="busy"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="mb-0">{{ message }}</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" (click)="cancel.emit()" [disabled]="busy">
+          {{ cancelLabel }}
+        </button>
+        <button class="btn" [ngClass]="danger ? 'btn-danger' : 'btn-primary'"
+                (click)="confirm.emit()" [disabled]="busy">
+          <span *ngIf="busy" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+          {{ confirmLabel }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

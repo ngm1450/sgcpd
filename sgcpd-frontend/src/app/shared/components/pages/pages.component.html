@@ -1,0 +1,23 @@
+<!-- Abas de navegação da área autenticada -->
+<nav class="nav nav-tabs justify-content-center mb-3" aria-label="Seções do sistema">
+  <a
+    class="nav-link"
+    routerLink="/conteudo"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    aria-current="page"
+  >
+    Conteúdos
+  </a>
+
+  <a
+    class="nav-link"
+    routerLink="/usuarios"
+    routerLinkActive="active"
+  >
+    Usuários
+  </a>
+</nav>
+
+<!-- Conteúdo das rotas filhas -->
+<router-outlet></router-outlet>

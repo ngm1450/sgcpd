@@ -5,5 +5,6 @@ import jakarta.validation.constraints.*;
 public record UsuarioAlteracaoRequest(
     @NotBlank @Size(max = 160) String nome,
     @NotBlank @Email @Size(max = 160) String email,
+    String senha,
     Boolean ativo
 ) {}
