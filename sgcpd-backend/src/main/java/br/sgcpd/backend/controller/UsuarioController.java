@@ -1,5 +1,6 @@
 package br.sgcpd.backend.controller;
 
+import br.sgcpd.backend.dto.PageResponse;
 import br.sgcpd.backend.dto.usuario.UsuarioAlteracaoRequest;
 import br.sgcpd.backend.dto.usuario.UsuarioCriacaoRequest;
 import br.sgcpd.backend.dto.usuario.UsuarioResposta;
@@ -47,12 +48,14 @@ public class UsuarioController {
     public void delete(@PathVariable Long id) { usuarioService.delete(id); }
 
     @GetMapping
-    public Page<UsuarioResposta> list(
+    public PageResponse<UsuarioResposta> list(
         @RequestParam(required = false) String q,
         @RequestParam(required = false) Boolean ativo,
         @PageableDefault(size = 20) Pageable pageable
     ) {
-        return usuarioService.list(q, ativo, pageable);
+        var page = usuarioService.list(q, ativo, pageable);
+        return PageResponse.from(page);
     }
+
 }
 

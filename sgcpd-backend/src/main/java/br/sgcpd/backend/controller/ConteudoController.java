@@ -1,5 +1,6 @@
 package br.sgcpd.backend.controller;
 
+import br.sgcpd.backend.dto.PageResponse;
 import br.sgcpd.backend.dto.conteudo.ConteudoAlteracaoRequest;
 import br.sgcpd.backend.dto.conteudo.ConteudoBuscaRequest;
 import br.sgcpd.backend.dto.conteudo.ConteudoCriacaoRequest;
@@ -63,19 +64,21 @@ public class ConteudoController {
     public void delete(@PathVariable Long id) { service.delete(id); }
 
     @GetMapping
-    public Page<ConteudoSimplesResponse> search(
+    public PageResponse<ConteudoSimplesResponse> search(
         @RequestParam(required = false) String textoBusca,
         @RequestParam(required = false) Long idCategoria,
         @RequestParam(required = false) Set<Long> idsTags,
         @RequestParam(required = false) StatusConteudoEnum status,
         @RequestParam(required = false) Instant createdFrom,
         @RequestParam(required = false) Instant createdTo,
-        @RequestParam(required = false) Integer page,
-        @RequestParam(required = false) Integer size,
+        @RequestParam(defaultValue = "0") Integer page,
+        @RequestParam(defaultValue = "12") Integer size,
         @RequestParam(required = false) String sort
     ) {
         var params = new ConteudoBuscaRequest(textoBusca, idCategoria, idsTags, status, createdFrom, createdTo, page, size, sort);
-        return service.search(params);
+        var result = service.search(params);
+        return PageResponse.from(result);
     }
+
 
 }

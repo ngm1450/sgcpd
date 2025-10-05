@@ -99,7 +99,6 @@ export class NovoConteudoModalComponent implements OnChanges {
 
     this.conteudoService.obter(id).pipe(take(1)).subscribe({
       next: (dados) => {
-        this.conteudoInicial = dados;
         this.form.titulo = dados.titulo ?? '';
         this.form.corpo  = dados.corpo ?? '';
         this.form.status = (dados.status as StatusConteudoEnum) ?? StatusConteudoEnum.RASCUNHO;
@@ -199,7 +198,6 @@ export class NovoConteudoModalComponent implements OnChanges {
     this.form = { titulo: '', corpo: '', idCategoria: null, status: StatusConteudoEnum.RASCUNHO };
     this.selectedTagIds.clear();
     this.tags = [];
-    this.conteudoInicial = null;
 
     this.errorCategorias = this.errorTags = this.errorConteudo = null;
     this.loadingCategorias = this.loadingTags = this.loadingConteudo = false;
